@@ -9,6 +9,8 @@
 #define SRC_TYPES_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include <asio.hpp>
+#include <filesystem>
 #include <ostream>
 #include <string>
 #include <vector>
@@ -18,8 +20,11 @@ namespace src
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-using path = std::string;
+using path = std::filesystem::path;
 using args = std::vector<std::string>;
+
+using address = asio::ip::address;
+using port = unsigned short;
 
 ////////////////////////////////////////////////////////////////////////////////
 }
