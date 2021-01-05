@@ -10,6 +10,7 @@ add_definitions(-DASIO_STANDALONE)
 
 set(SOURCES
     src/server.cpp src/server.hpp
+    src/types.hpp
     src/main.cpp
 )
 
