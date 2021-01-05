@@ -23,6 +23,7 @@ server::server(asio::io_context& io, const udp::endpoint& local) :
     socket_(io)
 {
     std::cout << "Opening UDP socket on " << local << std::endl;
+
     socket_.open(udp::v4());
     socket_.bind(local);
 
@@ -47,7 +48,7 @@ void server::async_read()
             }
             catch(std::exception& e)
             {
-                std::cerr << "Error: " << e.what() << std::endl;
+                std::cerr << e.what() << std::endl;
             }
             async_read();
         }
@@ -58,8 +59,8 @@ void server::async_read()
 void server::sched_call(osc::time time, const osc::bound_callback& cb)
 {
     auto& io = socket_.get_io_context();
-
     auto timer = std::make_shared<asio::system_timer>(io, time);
+
     timer->async_wait([timer, cb](const asio::error_code& ec) { if(!ec) cb(); });
 }
 
