@@ -16,6 +16,9 @@ namespace src
 {
 
 ////////////////////////////////////////////////////////////////////////////////
+namespace
+{
+
 std::ostream& operator<<(std::ostream& os, const action& act)
 {
     os << act.file << " {";
@@ -23,15 +26,54 @@ std::ostream& operator<<(std::ostream& os, const action& act)
     return os << " }";
 }
 
-////////////////////////////////////////////////////////////////////////////////
-void action::operator()(const osc::message& m)
+auto to_string(const osc::value& v)
 {
-    auto args_ { args };
+    std::string s;
 
-    //
+         if(v.is_int32 ()) s = std::to_string(v.to_int32 ());
+    else if(v.is_float ()) s = std::to_string(v.to_float ());
+    else if(v.is_string()) s = v.to_string();
+    else if(v.is_int64 ()) s = std::to_string(v.to_int64 ());
+    else if(v.is_time  ()) s = '@' + std::to_string(v.to_time().time_since_epoch().count());
+    else if(v.is_double()) s = std::to_string(v.to_double());
+    else if(v.is_char  ()) s = v.to_char();
+    else if(v.is_true  ()) s = "true";
+    else if(v.is_false ()) s = "false";
+    else if(v.is_nil   ()) s = "nil";
+    else if(v.is_inf   ()) s = "inf";
+
+    return s;
+}
+
+void replace(std::string& s, const std::string& from, const std::string& to)
+{
+    std::size_t p = 0;
+    while((p = s.find(from, p)) != std::string::npos)
+    {
+        s.replace(p, from.size(), to);
+        p += to.size();
+    }
+}
+
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void action::operator()(const osc::message& msg)
+{
+    auto args_2 = args;
+
+    for(auto& arg : args_2) replace(arg, "{A}", msg.address());
+
+    int n = 0;
+    for(auto const& val : msg.values())
+    {
+        auto from = '{' + std::to_string(n++) + '}';
+        auto to = to_string(val);
+        for(auto& arg : args_2) replace(arg, from, to);
+    }
 
     if(auto pid = fork(); pid == child)
-        exec(file, args_);
+        exec(file, args_2);
     else std::cout << "Starting " << (*this) << " as process " << pid << std::endl;
 }
 
