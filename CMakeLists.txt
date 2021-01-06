@@ -9,15 +9,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 add_definitions(-DASIO_STANDALONE)
 
 set(SOURCES
-    src/action.cpp   src/action.hpp
-    src/actions.cpp  src/actions.hpp
-    src/args.cpp     src/args.hpp
-    src/command.cpp  src/command.hpp
-    src/server.cpp   src/server.hpp
-    src/settings.cpp src/settings.hpp
-    src/system.cpp   src/system.hpp
-    src/types.hpp
+    src/action.cpp  src/action.hpp
+    src/actions.cpp src/actions.hpp
+    src/args.cpp    src/args.hpp
     src/main.cpp
+    src/server.cpp  src/server.hpp
+    src/system.cpp  src/system.hpp
 )
 
 ########################
