@@ -5,14 +5,49 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "actions.hpp"
+#include "args.hpp"
 #include "server.hpp"
-#include "settings.hpp"
+#include "system.hpp"
 
 #include <asio.hpp>
 #include <exception>
+#include <filesystem>
 #include <iostream>
 
 using namespace asio::ip;
+namespace fs = std::filesystem;
+
+////////////////////////////////////////////////////////////////////////////////
+#if !defined(PROJECT_VERSION)
+#define PROJECT_VERSION 0
+#endif
+
+////////////////////////////////////////////////////////////////////////////////
+std::string usage(const std::string& name)
+{
+    return "Usage: " + name + R"( [option] [path]
+
+Where [path] is an optional path to an alternative settings file with OSC
+address patterns and their corresponding commands.
+
+Option is one or more of the following:
+
+    --address=<addr>    Specify IP address to bind to. Default: bind to all
+                        addresses.
+
+    --help, -h          Print this help screen and exit.
+
+    --port=<n>          Specify port to listen on. Default: 6260.
+
+    --version, -v       Show version and exit.)";
+}
+
+////////////////////////////////////////////////////////////////////////////////
+std::string version(const std::string& name)
+{
+    return name + " version PROJECT_VERSION";
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char* argv[])
@@ -20,15 +55,37 @@ int main(int argc, char* argv[])
     int exit_code = 0;
     try
     {
-        asio::io_context io;
+        auto name = fs::path(argv[0]).filename();
 
-        auto conf = src::settings::read(
-            (argc > 1) ? argv[1] : src::settings::default_path(argv[0])
-        );
-        src::server server(io, std::move(conf));
+        auto args = src::args::read_from(argc, argv);
+        if(args.help)
+        {
+            std::cout << usage(name) << std::endl;
+        }
+        else if(args.version)
+        {
+            std::cout << version(name) << std::endl;
+        }
+        else
+        {
+            if(args.path.empty()) args.path = src::data_path() / name / "actions.conf";
 
-        std::cout << "Starting event loop" << std::endl;
-        io.run();
+            std::cout << "Reading actions from " << args.path << std::endl;
+            auto acts = src::actions::read_from(args.path);
+
+            if(args.port == 0) args.port = 6260;
+
+            auto local = args.address.is_unspecified()
+                ? udp::endpoint(udp::v4(), args.port)
+                : udp::endpoint(args.address, args.port);
+            std::cout << "Listening on " << local << std::endl;
+
+            asio::io_context io;
+            src::server server(io, local, acts);
+
+            std::cout << "Starting event loop" << std::endl;
+            io.run();
+        }
     }
     catch(std::exception& e)
     {
