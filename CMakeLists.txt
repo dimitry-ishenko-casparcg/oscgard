@@ -7,6 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 add_definitions(-DASIO_STANDALONE)
+add_definitions(-DVERSION=${CMAKE_PROJECT_VERSION})
 
 set(SOURCES
     src/action.cpp  src/action.hpp

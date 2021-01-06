@@ -19,9 +19,12 @@ using namespace asio::ip;
 namespace fs = std::filesystem;
 
 ////////////////////////////////////////////////////////////////////////////////
-#if !defined(PROJECT_VERSION)
-#define PROJECT_VERSION 0
+#if !defined(VERSION)
+#  define VERSION 0
 #endif
+
+#define TEXT(x) TEXT_(x)
+#define TEXT_(x) #x
 
 ////////////////////////////////////////////////////////////////////////////////
 std::string usage(const std::string& name)
@@ -46,7 +49,7 @@ Option is one or more of the following:
 ////////////////////////////////////////////////////////////////////////////////
 std::string version(const std::string& name)
 {
-    return name + " version PROJECT_VERSION";
+    return name + " version " TEXT(VERSION);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
