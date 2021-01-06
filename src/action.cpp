@@ -1,0 +1,39 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2020 Dimitry Ishenko
+// Contact: dimitry (dot) ishenko (at) (gee) mail (dot) com
+//
+// Distributed under the GNU GPL license. See the LICENSE.md file for details.
+
+////////////////////////////////////////////////////////////////////////////////
+#include "action.hpp"
+#include "system.hpp"
+
+#include <iomanip>
+#include <iostream>
+
+////////////////////////////////////////////////////////////////////////////////
+namespace src
+{
+
+////////////////////////////////////////////////////////////////////////////////
+std::ostream& operator<<(std::ostream& os, const action& act)
+{
+    os << act.file << " {";
+    for(auto const& arg : act.args) os << " " << std::quoted(arg);
+    return os << " }";
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void action::operator()(const osc::message& m)
+{
+    auto args_ { args };
+
+    //
+
+    if(auto pid = fork(); pid == child)
+        exec(file, args_);
+    else std::cout << "Starting " << (*this) << " as process " << pid << std::endl;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+}
