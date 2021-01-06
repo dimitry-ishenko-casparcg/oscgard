@@ -30,7 +30,7 @@ pid_t fork()
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void exec(const path& file, const src::args& args)
+void exec(const fs::path& file, const std::vector<std::string>& args)
 {
     std::vector<const char*> argv;
 
@@ -61,14 +61,14 @@ void set_child_exit_callback(child_exit_callback cb)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-path data_path()
+fs::path data_path()
 {
 #if defined(_WIN32)
-    return path(std::getenv("APPDATA"));
+    return fs::path(std::getenv("APPDATA"));
 #elif defined(__APPLE__)
-    return path(std::getenv("HOME")) / "Library" / "Application Support";
+    return fs::path(std::getenv("HOME")) / "Library" / "Application Support";
 #elif defined(__unix__)
-    return path(std::getenv("HOME")) / ".local" / "share";
+    return fs::path(std::getenv("HOME")) / ".local" / "share";
 #else
     #error "Unsupported platform"
 #endif
