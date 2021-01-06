@@ -11,6 +11,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include <asio.hpp>
 #include <filesystem>
+#include <iomanip>
 #include <ostream>
 #include <string>
 #include <vector>
@@ -35,9 +36,9 @@ namespace std
 
 inline std::ostream& operator<<(std::ostream& os, const src::args& args)
 {
-    os << "{ ";
-    for(auto const& arg : args) os << arg << ", ";
-    return os << '}';
+    os << "{";
+    for(auto const& arg : args) os << " " << std::quoted(arg);
+    return os << " }";
 }
     
 }
