@@ -9,6 +9,7 @@
 
 #include <cerrno>
 #include <csignal>
+#include <cstdlib> // std::getenv
 #include <system_error>
 #include <vector>
 
@@ -58,6 +59,20 @@ void set_child_exit_callback(child_exit_callback cb)
     cb_ = std::move(cb);
     if(!cb_) std::signal(SIGCHLD, SIG_DFL);
 }
-    
+
+////////////////////////////////////////////////////////////////////////////////
+path data_path()
+{
+#if defined(_WIN32)
+    return path(std::getenv("APPDATA"));
+#elif defined(__APPLE__)
+    return path(std::getenv("HOME")) / "Library" / "Application Support";
+#elif defined(__unix__)
+    return path(std::getenv("HOME")) / ".local" / "share";
+#else
+    #error "Unsupported platform"
+#endif
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 }
