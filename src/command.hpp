@@ -10,8 +10,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "types.hpp"
-
-#include <mutex>
 #include <osc++.hpp>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -19,19 +17,17 @@ namespace src
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-class command
+struct command
 {
-public:
-    command(path, args = { });
+    command(path file, src::args args = { }) :
+        file_(std::move(file)), args_(std::move(args))
+    { }
 
     void operator()(const osc::message&);
 
 private:
     path file_;
     args args_;
-
-    static void spawn(const path&, const args&);
-    static void reap(int sig);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
