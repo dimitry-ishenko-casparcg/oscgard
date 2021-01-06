@@ -1,0 +1,53 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2020 Dimitry Ishenko
+// Contact: dimitry (dot) ishenko (at) (gee) mail (dot) com
+//
+// Distributed under the GNU GPL license. See the LICENSE.md file for details.
+
+////////////////////////////////////////////////////////////////////////////////
+#ifndef SRC_SETTINGS_HPP
+#define SRC_SETTINGS_HPP
+
+////////////////////////////////////////////////////////////////////////////////
+#include "types.hpp"
+
+#include <osc++.hpp>
+#include <stdexcept>
+#include <string>
+
+////////////////////////////////////////////////////////////////////////////////
+namespace src
+{
+
+////////////////////////////////////////////////////////////////////////////////
+struct invalid_line : public std::invalid_argument
+{
+    invalid_line(int n, const std::string& msg) :
+        std::invalid_argument(msg + " on line " + std::to_string(n))
+    { }
+};
+
+////////////////////////////////////////////////////////////////////////////////
+class settings
+{
+public:
+    auto const& address() const { return address_; }
+    auto const& port() const { return port_; }
+
+    auto const& address_space() const { return space_; }
+
+    static path default_path(const char* argv_0);
+    static settings read(const path&);
+
+private:
+    src::address address_;
+    src::port port_ = 6260;
+
+    osc::address_space space_;
+};
+    
+////////////////////////////////////////////////////////////////////////////////
+}
+
+////////////////////////////////////////////////////////////////////////////////
+#endif
