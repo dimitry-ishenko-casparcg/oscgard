@@ -39,7 +39,7 @@ path settings::default_path(const char* argv_0)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-namespace 
+namespace
 {
 
 auto parse_name(std::stringstream& ss)
@@ -76,14 +76,14 @@ auto parse_quoted(std::stringstream& ss)
     ss >> std::quoted(s) >> std::ws;
     return s;
 }
-    
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 settings settings::read(const src::path& file)
 {
     std::cout << "Reading settings from " << file << std::endl;
-    
+
     std::fstream fs(file, std::ios::in);
     if(!fs.is_open()) throw std::invalid_argument("Can't open file");
 
@@ -120,13 +120,13 @@ settings settings::read(const src::path& file)
             while(!ss.eof()) args.push_back(parse_quoted(ss));
 
             conf.space_.emplace_back(std::move(name),
-                command( std::move(file), std::move(args) )
+                command { std::move(file), std::move(args) }
             );
         }
     }
 
     return conf;
 }
-    
+
 ////////////////////////////////////////////////////////////////////////////////
 }

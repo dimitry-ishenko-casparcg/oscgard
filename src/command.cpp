@@ -8,7 +8,21 @@
 #include "command.hpp"
 #include "system.hpp"
 
+#include <iomanip>
 #include <iostream>
+
+////////////////////////////////////////////////////////////////////////////////
+namespace std
+{
+
+std::ostream& operator<<(std::ostream& os, const std::vector<std::string>& args)
+{
+    os << "{";
+    for(auto const& arg : args) os << " " << std::quoted(arg);
+    return os << " }";
+}
+
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace src
@@ -17,11 +31,13 @@ namespace src
 ////////////////////////////////////////////////////////////////////////////////
 void command::operator()(const osc::message& m)
 {
-    src::args args = args_;
+    auto args_ { args };
+
+    //
 
     if(auto pid = fork(); pid == child)
-        exec(file_, args);
-    else std::cout << "Starting " << file_ << " " << args << " as process " << pid << std::endl;
+        exec(file, args_);
+    else std::cout << "Starting " << file << " " << args_ << " as process " << pid << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

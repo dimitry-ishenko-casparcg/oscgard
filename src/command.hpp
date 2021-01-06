@@ -9,8 +9,12 @@
 #define SRC_COMMAND_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
-#include "types.hpp"
+#include <filesystem>
 #include <osc++.hpp>
+#include <string>
+#include <vector>
+
+namespace fs = std::filesystem;
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace src
@@ -19,15 +23,10 @@ namespace src
 ////////////////////////////////////////////////////////////////////////////////
 struct command
 {
-    command(path file, src::args args = { }) :
-        file_(std::move(file)), args_(std::move(args))
-    { }
+    fs::path file;
+    std::vector<std::string> args;
 
     void operator()(const osc::message&);
-
-private:
-    path file_;
-    args args_;
 };
 
 ////////////////////////////////////////////////////////////////////////////////
