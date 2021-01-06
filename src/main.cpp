@@ -6,6 +6,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "server.hpp"
+#include "settings.hpp"
 
 #include <asio.hpp>
 #include <exception>
@@ -14,18 +15,17 @@
 using namespace asio::ip;
 
 ////////////////////////////////////////////////////////////////////////////////
-int main()
+int main(int argc, char* argv[])
 {
     int exit_code = 0;
     try
     {
         asio::io_context io;
 
-        // process_options
-        // read_settings
-
-        udp::endpoint local(udp::v4(), 6260);
-        src::server server(io, local);
+        auto conf = src::settings::read(
+            (argc > 1) ? argv[1] : src::settings::default_path(argv[0])
+        );
+        src::server server(io, std::move(conf));
 
         std::cout << "Starting event loop" << std::endl;
         io.run();
