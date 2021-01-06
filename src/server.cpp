@@ -6,6 +6,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "server.hpp"
+#include "system.hpp"
 
 #include <exception>
 #include <functional> // std::bind
@@ -22,6 +23,11 @@ namespace src
 server::server(asio::io_context& io, const udp::endpoint& local, const actions& acts) :
     socket_(io), actions_(acts)
 {
+    set_child_exit_callback([](pid_t pid, int status)
+    {
+        std::cout << "Process " << pid << " exited with status " << status << std::endl;
+    });
+
     socket_.open(udp::v4());
     socket_.bind(local);
 
