@@ -32,7 +32,7 @@ struct args
     bool version = false;
     bool help = false;
 
-    fs::path settings;
+    fs::path path;
 
     static args read_from(int argc, char* argv[]);
 };

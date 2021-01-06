@@ -94,7 +94,7 @@ args args::read_from(int argc, char* argv[])
         }
         else
         {
-            if(args.settings.empty()) args.settings = arg;
+            if(args.path.empty()) args.path = arg;
             else throw extra_param(arg);
         }
     }
