@@ -12,6 +12,7 @@ set(SOURCES
     src/command.cpp  src/command.hpp
     src/server.cpp   src/server.hpp
     src/settings.cpp src/settings.hpp
+    src/system.cpp   src/system.hpp
     src/types.hpp
     src/main.cpp
 )
