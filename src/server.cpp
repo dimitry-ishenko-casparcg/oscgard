@@ -35,7 +35,7 @@ void server::async_read()
     {
         if(!ec)
         {
-            osc::packet packet{ socket_.available() };
+            osc::packet packet{ static_cast<osc::int32>(socket_.available()) };
             udp::endpoint remote;
 
             socket_.receive_from(asio::buffer(packet.data(), packet.size()), remote);
