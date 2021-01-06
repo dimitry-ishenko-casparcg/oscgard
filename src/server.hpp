@@ -9,6 +9,8 @@
 #define SRC_SERVER_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "settings.hpp"
+
 #include <asio.hpp>
 #include <osc++.hpp>
 
@@ -22,14 +24,13 @@ namespace src
 class server
 {
 public:
-    server(asio::io_context&, const udp::endpoint&);
+    server(asio::io_context&, settings);
 
 private:
     udp::socket socket_;
+    settings conf_;
 
     void async_read();
-
-    osc::address_space space_;
     void sched_call(osc::time, const osc::bound_callback&);
 };
 

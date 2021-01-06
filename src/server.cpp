@@ -19,9 +19,12 @@ namespace src
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-server::server(asio::io_context& io, const udp::endpoint& local) :
-    socket_(io)
+server::server(asio::io_context& io, settings conf) :
+    socket_(io), conf_(std::move(conf))
 {
+    auto local = conf_.address().is_unspecified()
+        ? udp::endpoint(udp::v4(), conf_.port())
+        : udp::endpoint(conf_.address(), conf_.port());
     std::cout << "Opening UDP socket on " << local << std::endl;
 
     socket_.open(udp::v4());
@@ -44,7 +47,9 @@ void server::async_read()
             try
             {
                 auto e = p.parse();
-                osc::dispatch(space_, e, std::bind(&server::sched_call, this, _1, _2));
+                osc::dispatch(conf_.address_space(), e,
+                    std::bind(&server::sched_call, this, _1, _2)
+                );
             }
             catch(std::exception& e)
             {
