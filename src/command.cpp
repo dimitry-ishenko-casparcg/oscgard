@@ -31,7 +31,7 @@ command::command(path file, src::args args) :
 ////////////////////////////////////////////////////////////////////////////////
 void command::operator()(const osc::message& m)
 {
-    src::args args;
+    src::args args = args_;
     //
 
     spawn(file_, args);
@@ -42,8 +42,7 @@ void command::spawn(const path& file, const src::args& args)
 {
     if(auto pid = fork(); pid > 0)
     {
-        std::cout << "Process " << pid << ": ";
-        std::cout << "launching '" << file << " " << args << "'" << std::endl;
+        std::cout << "Starting " << file << " " << args << " as process " << pid << std::endl;
     }
     else
     {
@@ -68,10 +67,9 @@ void command::reap(int)
     pid_t pid;
     int status;
 
-    while((pid = waitpid(-1, &status, WNOHANG)) != -1)
+    while((pid = waitpid(-1, &status, WNOHANG)) > 0)
     {
-        std::cout << "Process " << pid << ": ";
-        std::cout << "exited with status " << status << std::endl;
+        std::cout << "Process " << pid << " exited with status " << status << std::endl;
     }
 }
 
