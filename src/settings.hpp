@@ -11,9 +11,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "types.hpp"
 
+#include <filesystem>
 #include <osc++.hpp>
 #include <stdexcept>
 #include <string>
+
+namespace fs = std::filesystem;
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace src
@@ -36,8 +39,8 @@ public:
 
     auto const& address_space() const { return space_; }
 
-    static path default_path(const char* argv_0);
-    static settings read(const path&);
+    static fs::path default_path(const char* argv_0);
+    static settings read(const fs::path&);
 
 private:
     src::address address_;
@@ -45,7 +48,7 @@ private:
 
     osc::address_space space_;
 };
-    
+
 ////////////////////////////////////////////////////////////////////////////////
 }
 

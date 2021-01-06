@@ -10,32 +10,32 @@
 
 #include <asio.hpp>
 #include <cstdlib> // std::getenv
-#include <filesystem>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace src
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-path settings::default_path(const char* argv_0)
+fs::path settings::default_path(const char* argv_0)
 {
 #if defined(_WIN32)
-    auto file = path(std::getenv("APPDATA"));
+    auto file = fs::path(std::getenv("APPDATA"));
 #elif defined(__APPLE__)
-    auto file = path(std::getenv("HOME")) / "Library" / "Application Support";
+    auto file = fs::path(std::getenv("HOME")) / "Library" / "Application Support";
 #elif defined(__unix__)
-    auto file = path(std::getenv("HOME")) / ".local" / "share";
+    auto file = fs::path(std::getenv("HOME")) / ".local" / "share";
 #else
     #error "Unsupported platform"
 #endif
 
-    file = file / path(argv_0).stem() / "settings.conf";
-    return std::filesystem::weakly_canonical(file);
+    file = file / fs::path(argv_0).stem() / "settings.conf";
+    return fs::weakly_canonical(file);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ auto parse_quoted(std::stringstream& ss)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-settings settings::read(const src::path& file)
+settings settings::read(const fs::path& file)
 {
     std::cout << "Reading settings from " << file << std::endl;
 
@@ -113,10 +113,10 @@ settings settings::read(const src::path& file)
         }
         else
         {
-            path file = parse_quoted(ss);
+            fs::path file = parse_quoted(ss);
             if(file.empty()) throw invalid_line(n, "Missing or empty file name");
 
-            src::args args;
+            std::vector<std::string> args;
             while(!ss.eof()) args.push_back(parse_quoted(ss));
 
             conf.space_.emplace_back(std::move(name),
