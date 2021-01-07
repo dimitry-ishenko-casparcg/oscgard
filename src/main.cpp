@@ -13,6 +13,7 @@
 #include <asio.hpp>
 #include <exception>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 
 using namespace asio::ip;
@@ -71,7 +72,13 @@ int main(int argc, char* argv[])
         }
         else
         {
-            if(args.path.empty()) args.path = src::data_path() / name / "actions.conf";
+            if(args.path.empty())
+            {
+                args.path = src::data_path() / name / "actions.conf";
+                fs::create_directory(args.path.parent_path());
+
+                if(!fs::exists(args.path)) std::fstream{ args.path, std::ios::out };
+            }
 
             std::cout << "Reading actions from " << args.path << std::endl;
             auto acts = src::actions::read_from(args.path);
