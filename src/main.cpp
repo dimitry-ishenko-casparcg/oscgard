@@ -32,8 +32,7 @@ std::string usage(const std::string& name)
 {
     return "Usage: " + name + R"( [option] [path]
 
-Where [path] is an optional path to an alternative settings file with OSC
-address patterns and their corresponding commands.
+Where [path] is an optional path to an alternative actions file.
 
 Option is one or more of the following:
 
