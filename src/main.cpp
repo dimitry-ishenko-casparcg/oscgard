@@ -92,6 +92,12 @@ int main(int argc, char* argv[])
             asio::io_context io;
             src::server server(io, local, acts);
 
+            src::set_interrupt_callback([&](int signal)
+            {
+                std::cout << "Received signal " << signal << " - exiting" << std::endl;
+                io.stop();
+            });
+
             std::cout << "Starting event loop" << std::endl;
             io.run();
         }
