@@ -1,0 +1,11 @@
+[Unit]
+Description=OSC Gateway
+
+[Service]
+Environment="args="
+ExecStart=/usr/bin/oscgard $args
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target
