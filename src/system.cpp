@@ -61,6 +61,21 @@ void set_child_exit_callback(child_exit_callback cb)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+void set_interrupt_callback(interrupt_callback cb)
+{
+    static interrupt_callback cb_;
+
+    if(!cb_)
+    {
+        std::signal(SIGINT, [](int signal) { cb_(signal); });
+        std::signal(SIGTERM, [](int signal) { cb_(signal); });
+    }
+
+    cb_ = std::move(cb);
+    if(!cb_) std::signal(SIGINT, SIG_DFL), std::signal(SIGTERM, SIG_DFL);
+}
+
+////////////////////////////////////////////////////////////////////////////////
 fs::path data_path()
 {
 #if defined(_WIN32)
