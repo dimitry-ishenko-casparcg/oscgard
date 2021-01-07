@@ -7,7 +7,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 add_definitions(-DASIO_STANDALONE)
-add_definitions(-DVERSION=${CMAKE_PROJECT_VERSION})
+add_definitions(-DVERSION=${PROJECT_VERSION})
 
 set(SOURCES
     src/action.cpp  src/action.hpp
@@ -34,7 +34,7 @@ set(CPACK_STRIP_FILES ON)
 set(CPACK_GENERATOR DEB)
 
 set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "OSC Gateway")
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "Dimitry Ishenko <dimitry (dot) ishenko (at) (gee) mail (dot) com>")
 
 set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
