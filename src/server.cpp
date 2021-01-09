@@ -31,11 +31,11 @@ server::server(asio::io_context& io, const udp::endpoint& local, const actions& 
     socket_.open(udp::v4());
     socket_.bind(local);
 
-    async_read();
+    async_recv();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void server::async_read()
+void server::async_recv()
 {
     socket_.async_wait(udp::socket::wait_read, [=](const asio::error_code& ec)
     {
@@ -54,7 +54,7 @@ void server::async_read()
             {
                 std::cerr << e.what() << std::endl;
             }
-            async_read();
+            async_recv();
         }
     });
 }
