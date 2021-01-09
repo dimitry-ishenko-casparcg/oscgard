@@ -46,11 +46,7 @@ Option is one or more of the following:
     --version, -v       Show version and exit.)";
 }
 
-////////////////////////////////////////////////////////////////////////////////
-std::string version(const std::string& name)
-{
-    return name + " version " TEXT(VERSION);
-}
+std::string version(const std::string& name) { return name + " version " TEXT(VERSION); }
 
 ////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char* argv[])
@@ -74,8 +70,8 @@ int main(int argc, char* argv[])
             if(args.path.empty())
             {
                 args.path = src::data_path() / name / "actions.conf";
-                fs::create_directory(args.path.parent_path());
 
+                fs::create_directory(args.path.parent_path());
                 if(!fs::exists(args.path)) std::fstream{ args.path, std::ios::out };
             }
 
