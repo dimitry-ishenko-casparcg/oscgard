@@ -6,7 +6,6 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 #include "args.hpp"
-#include <sstream>
 
 ////////////////////////////////////////////////////////////////////////////////
 namespace src
@@ -50,16 +49,12 @@ args args::read_from(int argc, char* argv[])
         std::string arg = argv[n];
         if(arg.empty()) continue;
 
-        if(arg == "--address")
-        {
-            throw missing_value(arg);
-        }
+        if(arg == "--address") throw missing_value(arg);
         else if(starts_with(arg, "--address="))
         {
             if(args.address.is_unspecified())
             {
-                auto s = arg.substr(sizeof("--address=") - 1);
-                args.address = to_address(s);
+                args.address = to_address( arg.substr(sizeof("--address=")-1) );
                 if(args.address.is_unspecified()) throw invalid_value(arg);
             }
             else throw duplicate_option(arg);
@@ -69,16 +64,12 @@ args args::read_from(int argc, char* argv[])
             args.help = true;
             return args;
         }
-        else if(arg == "--port")
-        {
-            throw missing_value(arg);
-        }
+        else if(arg == "--port") throw missing_value(arg);
         else if(starts_with(arg, "--port="))
         {
             if(args.port == 0)
             {
-                auto s = arg.substr(sizeof("--port=") - 1);
-                args.port = to_port(s);
+                args.port = to_port( arg.substr(sizeof("--port=")-1) );
                 if(args.port == 0) throw invalid_value(arg);
             }
             else throw duplicate_option(arg);
@@ -88,10 +79,7 @@ args args::read_from(int argc, char* argv[])
             args.version = true;
             return args;
         }
-        else if(arg[0] == '-')
-        {
-            throw invalid_option(arg);
-        }
+        else if(arg[0] == '-') throw invalid_option(arg);
         else
         {
             if(args.path.empty()) args.path = arg;
