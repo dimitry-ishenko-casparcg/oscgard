@@ -17,7 +17,7 @@ only needed when compiling oscgard from source.
 Debian/Ubuntu/etc:
 
 ```shell
-$ ver=0.0
+$ ver=0.1
 $ url=https://github.com/dimitry-ishenko-casparcg/oscgard/releases/download/v${ver}
 $ wget ${url}/oscgard_${ver}_amd64.deb
 $ sudo apt install ./oscgard_${ver}_amd64.deb
@@ -26,7 +26,7 @@ $ sudo apt install ./oscgard_${ver}_amd64.deb
 RaspberryPi:
 
 ```shell
-$ ver=0.0
+$ ver=0.1
 $ url=https://github.com/dimitry-ishenko-casparcg/oscgard/releases/download/v${ver}
 $ wget ${url}/oscgard_${ver}_armhf.deb
 $ sudo apt install ./oscgard_${ver}_armhf.deb
@@ -37,7 +37,7 @@ $ sudo apt install ./oscgard_${ver}_armhf.deb
 Stable version (requires [CMake](https://cmake.org/) >= 3.1):
 
 ```shell
-$ ver=0.0
+$ ver=0.1
 $ wget https://github.com/dimitry-ishenko-casparcg/oscgard/archive/v${ver}.tar.gz
 $ tar xzf v${ver}.tar.gz
 $ mkdir oscgard-${ver}/build
