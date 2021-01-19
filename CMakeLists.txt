@@ -10,9 +10,9 @@ add_definitions(-DASIO_STANDALONE)
 add_definitions(-DVERSION=${PROJECT_VERSION})
 
 set(SOURCES
+    pgm/args.cpp    pgm/args.hpp
     src/action.cpp  src/action.hpp
     src/actions.cpp src/actions.hpp
-    src/args.cpp    src/args.hpp
     src/main.cpp
     src/server.cpp  src/server.hpp
     src/system.cpp  src/system.hpp
