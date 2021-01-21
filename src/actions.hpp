@@ -21,16 +21,15 @@ namespace src
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-struct actions : public osc::address_space
-{
-    static actions read_from(const fs::path&);
-};
+using actions = osc::address_space;
+
+actions read_actions(const fs::path&);
 
 ////////////////////////////////////////////////////////////////////////////////
 struct invalid_line : public std::invalid_argument
 {
     invalid_line(int n, const std::string& msg) :
-        std::invalid_argument(msg + " on line " + std::to_string(n))
+        std::invalid_argument{ msg + " on line " + std::to_string(n) }
     { }
 };
 

@@ -91,7 +91,7 @@ int main(int argc, char* argv[])
             }
 
             std::cout << "Reading actions from " << path << "." << std::endl;
-            auto acts{ src::actions::read_from(path) };
+            auto acts = src::read_actions(path);
 
             auto address{ to_address(args["--address"].value_or("0.0.0.0")) };
             auto port{ to_port(args["--port"].value_or("6260")) };

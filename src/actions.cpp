@@ -44,26 +44,26 @@ auto get_quoted(std::stringstream& ss)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-actions actions::read_from(const fs::path& file)
+actions read_actions(const fs::path& file)
 {
-    std::fstream fs(file, std::ios::in);
-    if(!fs.good()) throw std::invalid_argument("Can't open file");
+    std::fstream fs{ file, std::ios::in };
+    if(!fs.good()) throw std::invalid_argument{ "Can't open file" };
 
     actions acts;
 
-    std::string line;
-    for(int n = 1; std::getline(fs, line); ++n)
+    std::string read;
+    for(int n = 1; std::getline(fs, read); ++n)
     {
-        std::stringstream ss(line);
+        std::stringstream ss{ read };
         ss >> std::ws;
 
         auto name = get_string(ss);
         if(name.empty() || name[0] == '#') continue;
 
-        if(!get_equal_sign(ss)) throw invalid_line(n, "Missing '=' sign");
+        if(!get_equal_sign(ss)) throw invalid_line{ n, "Missing '=' sign" };
 
-        fs::path file = get_quoted(ss);
-        if(file.empty()) throw invalid_line(n, "Missing or empty file name");
+        fs::path file{ get_quoted(ss) };
+        if(file.empty()) throw invalid_line{ n, "Missing or empty file name" };
 
         std::vector<std::string> args;
         while(!ss.eof()) args.push_back(get_quoted(ss));
