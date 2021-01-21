@@ -58,7 +58,7 @@ void replace_token(std::string& s, const std::string& tkn, const std::string& to
 
 auto replace_tokens(const std::vector<std::string>& args, const osc::message& msg)
 {
-    auto args_ { args };
+    auto args_{ args };
 
     for(auto& arg : args_) replace_token(arg, "{A}", msg.address());
 
