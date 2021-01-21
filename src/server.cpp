@@ -21,7 +21,7 @@ namespace src
 
 ////////////////////////////////////////////////////////////////////////////////
 server::server(asio::io_context& io, const udp::endpoint& local, const actions& acts) :
-    socket_(io), actions_(acts)
+    socket_{ io }, actions_{ acts }
 {
     set_child_exit_callback([](pid_t pid, int status)
     {
