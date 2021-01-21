@@ -12,10 +12,10 @@
 
 #include <asio.hpp>
 #include <cstdint>
+#include <exception>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <stdexcept>
 #include <string>
 
 namespace fs = std::filesystem;
@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
             std::cout << "Listening on " << local << "." << std::endl;
 
             asio::io_context io;
-            src::server server(io, local, acts);
+            src::server server{ io, local, acts };
 
             src::set_interrupt_callback([&](int signal)
             {
