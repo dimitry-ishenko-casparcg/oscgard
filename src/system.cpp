@@ -24,7 +24,7 @@ namespace src
 pid_t fork()
 {
     auto pid = ::fork();
-    if(pid < 0) throw std::system_error(errno, std::generic_category());
+    if(pid < 0) throw std::system_error{ errno, std::generic_category() };
 
     return pid;
 }
@@ -40,7 +40,7 @@ void exec(const fs::path& file, const std::vector<std::string>& args)
 
     execvp(argv[0], const_cast<char* const*>(argv.data()));
 
-    throw std::system_error(errno, std::generic_category());
+    throw std::system_error{ errno, std::generic_category() };
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -79,11 +79,11 @@ void set_interrupt_callback(interrupt_callback cb)
 fs::path data_path()
 {
 #if defined(_WIN32)
-    return fs::path(std::getenv("APPDATA"));
+    return fs::path{ std::getenv("APPDATA") };
 #elif defined(__APPLE__)
-    return fs::path(std::getenv("HOME")) / "Library" / "Application Support";
+    return fs::path{ std::getenv("HOME") } / "Library" / "Application Support";
 #elif defined(__unix__)
-    return fs::path(std::getenv("HOME")) / ".local" / "share";
+    return fs::path{ std::getenv("HOME") } / ".local" / "share";
 #else
     #error "Unsupported platform"
 #endif
