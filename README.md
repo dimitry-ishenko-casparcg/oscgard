@@ -34,12 +34,14 @@ $ sudo apt install ./oscgard_${ver}_armhf.deb
 
 ### From source
 
-Stable version (requires [CMake](https://cmake.org/) >= 3.1):
+Stable version (requires [CMake](https://cmake.org/) >= 3.1 and
+[asio](https://think-async.com/Asio/)):
 
 ```shell
 $ ver=0.1
-$ wget https://github.com/dimitry-ishenko-casparcg/oscgard/archive/v${ver}.tar.gz
-$ tar xzf v${ver}.tar.gz
+$ url=https://github.com/dimitry-ishenko-casparcg/oscgard/releases/download/v${ver}
+$ wget ${url}/oscgard-${ver}.tar.bz2
+$ tar -xjf oscgard-${ver}.tar.bz2
 $ mkdir oscgard-${ver}/build
 $ cd oscgard-${ver}/build
 $ cmake ..
@@ -47,11 +49,11 @@ $ make
 $ sudo make install
 ```
 
-Latest master (requires[git](https://git-scm.com/) and
-[CMake](https://cmake.org/) >= 3.1):
+Latest master (requires [git](https://git-scm.com/),
+[CMake](https://cmake.org/) >= 3.1 and [asio](https://think-async.com/Asio/)):
 
 ```shell
-$ git https://github.com/dimitry-ishenko-casparcg/oscgard.git
+$ git clone --recursive https://github.com/dimitry-ishenko-casparcg/oscgard.git
 $ mkdir oscgard/build
 $ cd oscgard/build
 $ cmake ..
