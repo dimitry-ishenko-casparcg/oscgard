@@ -38,37 +38,37 @@ auto to_string(const osc::value& v)
     return s;
 }
 
-void replace_token(std::string& s, const std::string& tkn, const std::string& to)
+void replace_token(std::string& s, const std::string& from, const std::string& to)
 {
     std::size_t p = 0;
-    while((p = s.find(tkn, p)) != std::string::npos)
+    while((p = s.find(from, p)) != std::string::npos)
     {
-        s.replace(p, tkn.size(), to);
+        s.replace(p, from.size(), to);
         p += to.size();
     }
 }
 
-void replace_tokens(std::vector<std::string>& args, const osc::message& msg)
+void replace_tokens(std::vector<std::string>& args, const osc::message& message)
 {
-    for(auto& arg : args) replace_token(arg, "{A}", msg.address());
+    for(auto& arg : args) replace_token(arg, "{A}", message.address());
 
     int n = 0;
-    for(auto const& val : msg.values())
+    for(auto const& value : message.values())
     {
-        auto tkn = '{' + std::to_string(n++) + '}';
-        auto to = to_string(val);
-        for(auto& arg : args) replace_token(arg, tkn, to);
+        auto from = '{' + std::to_string(n++) + '}';
+        auto to = to_string(value);
+        for(auto& arg : args) replace_token(arg, from, to);
     }
 }
 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void action::operator()(const osc::message& msg)
+void action::operator()(const osc::message& messsage)
 {
     if(auto pid = fork(); pid == 0) // child
     {
-        replace_tokens(args, msg);
+        replace_tokens(args, messsage);
         exec(file, args);
     }
     else std::cout << "Started " << file << " as process " << pid << std::endl;
