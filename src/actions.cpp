@@ -49,7 +49,7 @@ actions read_actions(const fs::path& file)
     std::fstream fs{ file, std::ios::in };
     if(!fs.good()) throw std::invalid_argument{ "Can't open file" };
 
-    actions acts;
+    src::actions actions;
 
     std::string read;
     for(int n = 1; std::getline(fs, read); ++n)
@@ -57,8 +57,8 @@ actions read_actions(const fs::path& file)
         std::stringstream ss{ read };
         ss >> std::ws;
 
-        auto name = get_string(ss);
-        if(name.empty() || name[0] == '#') continue;
+        auto cmd = get_string(ss);
+        if(cmd.empty() || cmd[0] == '#') continue;
 
         if(!get_equal_sign(ss)) throw invalid_line{ n, "Missing '=' sign" };
 
@@ -68,10 +68,10 @@ actions read_actions(const fs::path& file)
         std::vector<std::string> args;
         while(!ss.eof()) args.push_back(get_quoted(ss));
 
-        acts.emplace(name, action{ std::move(file), std::move(args) });
+        actions.emplace(cmd, action{ std::move(file), std::move(args) });
     }
 
-    return acts;
+    return actions;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
