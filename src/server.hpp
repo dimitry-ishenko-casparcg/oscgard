@@ -28,10 +28,10 @@ public:
 
 private:
     udp::socket socket_;
-    const actions& actions_;
+    osc::address_space space_;
 
     void async_recv();
-    void sched_call(osc::time, const osc::bound_callback&);
+    void callback_sched(osc::time, const osc::bound_callback&);
 };
 
 ////////////////////////////////////////////////////////////////////////////////

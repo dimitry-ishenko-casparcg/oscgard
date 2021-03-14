@@ -20,13 +20,15 @@ namespace src
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-server::server(asio::io_context& io, const udp::endpoint& local, const actions& acts) :
-    socket_{ io }, actions_{ acts }
+server::server(asio::io_context& io, const udp::endpoint& local, const src::actions& actions) :
+    socket_{ io }, space_{ std::bind(&server::callback_sched, this, _1, _2) }
 {
     set_child_exit_callback([](pid_t pid, int status)
     {
         std::cout << "Process " << pid << " exited with status " << status << std::endl;
     });
+
+    for(auto const& [ cmd, action ] : actions) space_.add(cmd, action);
 
     socket_.open(udp::v4());
     socket_.bind(local);
@@ -48,19 +50,20 @@ void server::async_recv()
             try
             {
                 auto element = packet.parse();
-                osc::dispatch(actions_, element, std::bind(&server::sched_call, this, _1, _2));
+                space_.dispatch(element);
             }
             catch(std::exception& e)
             {
                 std::cerr << e.what() << std::endl;
             }
+
             async_recv();
         }
     });
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void server::sched_call(osc::time time, const osc::bound_callback& cb)
+void server::callback_sched(osc::time time, const osc::bound_callback& cb)
 {
     auto& io = socket_.get_io_context();
     auto timer = std::make_shared<asio::system_timer>(io, time);
