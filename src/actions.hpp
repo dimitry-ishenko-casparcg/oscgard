@@ -9,10 +9,12 @@
 #define SRC_ACTIONS_HPP
 
 ////////////////////////////////////////////////////////////////////////////////
+#include "action.hpp"
+
 #include <filesystem>
-#include <osc++.hpp>
 #include <stdexcept>
 #include <string>
+#include <map>
 
 namespace fs = std::filesystem;
 
@@ -21,7 +23,7 @@ namespace src
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-using actions = osc::address_space;
+using actions = std::multimap<std::string, action>;
 
 actions read_actions(const fs::path&);
 

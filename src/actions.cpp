@@ -68,7 +68,7 @@ actions read_actions(const fs::path& file)
         std::vector<std::string> args;
         while(!ss.eof()) args.push_back(get_quoted(ss));
 
-        acts.emplace_back(std::move(name), action{ std::move(file), std::move(args) });
+        acts.emplace(name, action{ std::move(file), std::move(args) });
     }
 
     return acts;
