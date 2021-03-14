@@ -8,7 +8,6 @@
 #include "action.hpp"
 #include "system.hpp"
 
-#include <iomanip>
 #include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18,13 +17,6 @@ namespace src
 ////////////////////////////////////////////////////////////////////////////////
 namespace
 {
-
-std::ostream& operator<<(std::ostream& os, const action& act)
-{
-    os << act.file << " {";
-    for(auto const& arg : act.args) os << " " << std::quoted(arg);
-    return os << " }";
-}
 
 auto to_string(const osc::value& v)
 {
@@ -56,21 +48,17 @@ void replace_token(std::string& s, const std::string& tkn, const std::string& to
     }
 }
 
-auto replace_tokens(const std::vector<std::string>& args, const osc::message& msg)
+void replace_tokens(std::vector<std::string>& args, const osc::message& msg)
 {
-    auto args_{ args };
-
-    for(auto& arg : args_) replace_token(arg, "{A}", msg.address());
+    for(auto& arg : args) replace_token(arg, "{A}", msg.address());
 
     int n = 0;
     for(auto const& val : msg.values())
     {
         auto tkn = '{' + std::to_string(n++) + '}';
         auto to = to_string(val);
-        for(auto& arg : args_) replace_token(arg, tkn, to);
+        for(auto& arg : args) replace_token(arg, tkn, to);
     }
-
-    return args_;
 }
 
 }
@@ -78,11 +66,12 @@ auto replace_tokens(const std::vector<std::string>& args, const osc::message& ms
 ////////////////////////////////////////////////////////////////////////////////
 void action::operator()(const osc::message& msg)
 {
-    auto args_ = replace_tokens(args, msg);
-
-    if(auto pid = fork(); pid == child)
-        exec(file, args_);
-    else std::cout << "Starting " << (*this) << " as process " << pid << std::endl;
+    if(auto pid = fork(); pid == 0) // child
+    {
+        replace_tokens(args, msg);
+        exec(file, args);
+    }
+    else std::cout << "Started " << file << " as process " << pid << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
