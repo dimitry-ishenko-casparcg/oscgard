@@ -8,11 +8,12 @@
 #include "server.hpp"
 #include "system.hpp"
 
+#include <chrono>
 #include <exception>
 #include <functional> // std::bind
 #include <iostream>
-#include <memory>
 
+using namespace std::chrono_literals;
 using namespace std::placeholders;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -28,6 +29,7 @@ server::server(asio::io_context& io, const udp::endpoint& local, const src::acti
         std::cout << "Process " << pid << " exited with status " << status << std::endl;
     });
 
+    space_.add("/cancel", std::bind(&server::cancel, this, _1));
     for(auto const& [ cmd, action ] : actions) space_.add(cmd, action);
 
     socket_.open(udp::v4());
@@ -65,10 +67,19 @@ void server::async_recv()
 ////////////////////////////////////////////////////////////////////////////////
 void server::callback_sched(osc::time time, const osc::bound_callback& cb)
 {
-    auto& io = socket_.get_io_context();
-    auto timer = std::make_shared<asio::system_timer>(io, time);
+    auto expired = osc::clock::now() - 100ms;
+    timers_.erase(timers_.begin(), timers_.lower_bound(expired));
 
-    timer->async_wait([timer, cb](const asio::error_code& ec) { if(!ec) cb(); });
+    asio::system_timer timer{ socket_.get_io_context(), time };
+    timer.async_wait([=](const asio::error_code& ec) { if(!ec) cb(); });
+
+    timers_.emplace(time, std::move(timer));
+}
+
+////////////////////////////////////////////////////////////////////////////////
+void server::cancel(const osc::message& msg)
+{
+    if(msg.values().are<osc::time>()) timers_.erase(msg.value(0).to_time());
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -13,6 +13,7 @@
 
 #include <asio.hpp>
 #include <osc++.hpp>
+#include <map>
 
 using namespace asio::ip;
 
@@ -32,6 +33,9 @@ private:
 
     void async_recv();
     void callback_sched(osc::time, const osc::bound_callback&);
+
+    std::multimap<osc::time, asio::system_timer> timers_;
+    void cancel(const osc::message&);
 };
 
 ////////////////////////////////////////////////////////////////////////////////
