@@ -16,7 +16,7 @@ namespace gui
 {
 
 ////////////////////////////////////////////////////////////////////////////////
-class window : public QWidget
+class window : public QMainWindow
 {
     Q_OBJECT
 
