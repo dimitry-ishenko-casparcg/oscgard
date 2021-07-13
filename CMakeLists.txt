@@ -11,6 +11,15 @@ add_definitions(-DVERSION="${PROJECT_VERSION}")
 
 find_package(Threads REQUIRED)
 
+option(BUILD_GUI "Build GUI" ON)
+
+if(BUILD_GUI)
+    find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
+    set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTORCC ON)
+    set(CMAKE_AUTOUIC ON)
+endif()
+
 set(SOURCES
     pgm/args.cpp    pgm/args.hpp
     src/action.cpp  src/action.hpp
@@ -20,10 +29,22 @@ set(SOURCES
     src/util.cpp    src/util.hpp
 )
 
+set(GUI_SOURCES
+    gui/main.cpp
+    gui/window.cpp  gui/window.hpp gui/window.ui
+    pgm/args.cpp    pgm/args.hpp
+    src/util.cpp    src/util.hpp
+)
+
 ########################
 # executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 target_link_libraries(${PROJECT_NAME} osc++ ${CMAKE_THREAD_LIBS_INIT})
+
+if(BUILD_GUI)
+    add_executable(${PROJECT_NAME}-gui ${GUI_SOURCES})
+    target_link_libraries(${PROJECT_NAME}-gui Qt5::Core Qt5::Widgets)
+endif()
 
 ########################
 include(GNUInstallDirs)
