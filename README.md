@@ -17,19 +17,19 @@ only needed when compiling oscgard from source.
 Debian/Ubuntu/etc:
 
 ```shell
-$ ver=0.3
-$ url=https://github.com/dimitry-ishenko-casparcg/oscgard/releases/download/v${ver}
-$ wget ${url}/oscgard_${ver}_amd64.deb
-$ sudo apt install ./oscgard_${ver}_amd64.deb
+$ p=oscgard
+$ v=0.3
+$ wget https://github.com/dimitry-ishenko-casparcg/${p}/releases/download/v${v}/${p}_${v}_amd64.deb
+$ sudo apt install ./${p}_${v}_amd64.deb
 ```
 
 RaspberryPi:
 
 ```shell
-$ ver=0.3
-$ url=https://github.com/dimitry-ishenko-casparcg/oscgard/releases/download/v${ver}
-$ wget ${url}/oscgard_${ver}_armhf.deb
-$ sudo apt install ./oscgard_${ver}_armhf.deb
+$ p=oscgard
+$ v=0.3
+$ wget https://github.com/dimitry-ishenko-casparcg/${p}/releases/download/v${v}/${p}_${v}_armhf.deb
+$ sudo apt install ./${p}_${v}_armhf.deb
 ```
 
 ### From source
@@ -38,12 +38,12 @@ Stable version (requires [CMake](https://cmake.org/) >= 3.1 and
 [asio](https://think-async.com/Asio/)):
 
 ```shell
-$ ver=0.3
-$ url=https://github.com/dimitry-ishenko-casparcg/oscgard/releases/download/v${ver}
-$ wget ${url}/oscgard-${ver}.tar.bz2
-$ tar -xjf oscgard-${ver}.tar.bz2
-$ mkdir oscgard-${ver}/build
-$ cd oscgard-${ver}/build
+$ p=oscgard
+$ v=0.3
+$ wget https://github.com/dimitry-ishenko-casparcg/${p}/archive/v${v}.tar.gz
+$ tar xzf v${v}.tar.gz
+$ mkdir ${p}-${ver}/build
+$ cd ${p}-${ver}/build
 $ cmake ..
 $ make
 $ sudo make install
@@ -53,9 +53,10 @@ Latest master (requires [git](https://git-scm.com/),
 [CMake](https://cmake.org/) >= 3.1 and [asio](https://think-async.com/Asio/)):
 
 ```shell
-$ git clone --recursive https://github.com/dimitry-ishenko-casparcg/oscgard.git
-$ mkdir oscgard/build
-$ cd oscgard/build
+$ p=oscgard
+$ git clone --recursive https://github.com/dimitry-ishenko-casparcg/${p}.git
+$ mkdir ${p}/build
+$ cd ${p}/build
 $ cmake ..
 $ make
 $ sudo make install
