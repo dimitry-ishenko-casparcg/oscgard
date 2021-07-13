@@ -62,11 +62,13 @@ try
     args.parse(argc, argv);
 
     if(args["--help"])
+    {
         std::cout << args.usage(name) << std::endl;
-
+    }
     else if(args["--version"])
+    {
         std::cout << name.string() << " version " << VERSION << std::endl;
-
+    }
     else
     {
         fs::path path{ args["actions"].value_or("") };
