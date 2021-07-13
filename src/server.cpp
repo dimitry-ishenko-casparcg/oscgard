@@ -70,7 +70,7 @@ void server::callback_sched(osc::time time, const osc::bound_callback& cb)
     auto expired = osc::clock::now() - 100ms;
     timers_.erase(timers_.begin(), timers_.lower_bound(expired));
 
-    asio::system_timer timer{ socket_.get_io_context(), time };
+    asio::system_timer timer{ socket_.get_executor(), time };
     timer.async_wait([=](const asio::error_code& ec) { if(!ec) cb(); });
 
     timers_.emplace(time, std::move(timer));
