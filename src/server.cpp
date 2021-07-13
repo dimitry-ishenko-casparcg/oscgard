@@ -26,7 +26,7 @@ server::server(asio::io_context& io, const udp::endpoint& local, const src::acti
 {
     on_child_exit([](pid_t pid, int status)
     {
-        std::cout << "Process " << pid << " exited with status " << status << std::endl;
+        std::cout << "Process " << pid << " exited with status " << status << "." << std::endl;
     });
 
     space_.add("/cancel", std::bind(&server::cancel, this, _1));

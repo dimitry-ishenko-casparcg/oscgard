@@ -71,7 +71,7 @@ void action::operator()(const osc::message& messsage)
         replace_tokens(args, messsage);
         exec(file, args);
     }
-    else std::cout << "Started " << file << " as process " << pid << std::endl;
+    else std::cout << "Started " << file << " as process " << pid << "." << std::endl;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

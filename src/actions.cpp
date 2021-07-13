@@ -47,7 +47,7 @@ auto get_quoted(std::stringstream& ss)
 actions read_actions(const fs::path& file)
 {
     std::fstream fs{ file, std::ios::in };
-    if(!fs.good()) throw std::invalid_argument{ "Can't open file" };
+    if(!fs.good()) throw std::invalid_argument{ "Can't open file." };
 
     src::actions actions;
 
