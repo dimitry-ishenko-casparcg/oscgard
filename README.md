@@ -18,7 +18,7 @@ Debian/Ubuntu/etc:
 
 ```shell
 $ p=oscgard
-$ v=0.3
+$ v=1.0
 $ wget https://github.com/dimitry-ishenko-casparcg/${p}/releases/download/v${v}/${p}_${v}_amd64.deb
 $ sudo apt install ./${p}_${v}_amd64.deb
 ```
@@ -27,7 +27,7 @@ RaspberryPi:
 
 ```shell
 $ p=oscgard
-$ v=0.3
+$ v=1.0
 $ wget https://github.com/dimitry-ishenko-casparcg/${p}/releases/download/v${v}/${p}_${v}_armhf.deb
 $ sudo apt install ./${p}_${v}_armhf.deb
 ```
@@ -39,7 +39,7 @@ Stable version (requires [CMake](https://cmake.org/) >= 3.1 and
 
 ```shell
 $ p=oscgard
-$ v=0.3
+$ v=1.0
 $ wget https://github.com/dimitry-ishenko-casparcg/${p}/archive/v${v}.tar.gz
 $ tar xzf v${v}.tar.gz
 $ mkdir ${p}-${ver}/build
