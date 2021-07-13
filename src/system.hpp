@@ -30,13 +30,11 @@ void exec(const fs::path&, const std::vector<std::string>&);
 
 ////////////////////////////////////////////////////////////////////////////////
 using child_exit_callback = std::function<void (pid_t, int)>;
-
-void set_child_exit_callback(child_exit_callback);
+void on_child_exit(child_exit_callback);
 
 ////////////////////////////////////////////////////////////////////////////////
 using interrupt_callback = std::function<void (int)>;
-
-void set_interrupt_callback(interrupt_callback);
+void on_interrupt(interrupt_callback);
 
 ////////////////////////////////////////////////////////////////////////////////
 fs::path data_path();

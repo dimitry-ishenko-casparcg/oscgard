@@ -24,7 +24,7 @@ namespace src
 server::server(asio::io_context& io, const udp::endpoint& local, const src::actions& actions) :
     socket_{ io }, space_{ std::bind(&server::callback_sched, this, _1, _2) }
 {
-    set_child_exit_callback([](pid_t pid, int status)
+    on_child_exit([](pid_t pid, int status)
     {
         std::cout << "Process " << pid << " exited with status " << status << std::endl;
     });

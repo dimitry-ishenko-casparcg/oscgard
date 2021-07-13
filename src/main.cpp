@@ -90,7 +90,7 @@ try
         asio::io_context io;
         src::server server{ io, local, acts };
 
-        src::set_interrupt_callback([&](int signal)
+        src::on_interrupt([&](int signal)
         {
             std::cout << "Received signal " << signal << " - exiting." << std::endl;
             io.stop();

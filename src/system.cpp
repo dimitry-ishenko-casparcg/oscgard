@@ -44,7 +44,7 @@ void exec(const fs::path& file, const std::vector<std::string>& args)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void set_child_exit_callback(child_exit_callback cb)
+void on_child_exit(child_exit_callback cb)
 {
     static child_exit_callback cb_;
 
@@ -61,7 +61,7 @@ void set_child_exit_callback(child_exit_callback cb)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-void set_interrupt_callback(interrupt_callback cb)
+void on_interrupt(interrupt_callback cb)
 {
     static interrupt_callback cb_;
 
@@ -72,7 +72,12 @@ void set_interrupt_callback(interrupt_callback cb)
     }
 
     cb_ = std::move(cb);
-    if(!cb_) std::signal(SIGINT, SIG_DFL), std::signal(SIGTERM, SIG_DFL);
+
+    if(!cb_)
+    {
+        std::signal(SIGINT, SIG_DFL);
+        std::signal(SIGTERM, SIG_DFL);
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
