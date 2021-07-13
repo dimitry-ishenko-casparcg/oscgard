@@ -7,7 +7,7 @@ on a given computer (server).
 
 ### Prerequisites
 
-* [libosc++](https://github.com/dimitry-ishenko-casparcg/liboscpp) >= 0.8
+* [libosc++](https://github.com/dimitry-ishenko-casparcg/liboscpp) >= 1.0
 
 Follow installation instructions on their home page. `libosc++-dev` package is
 only needed when compiling oscgard from source.
