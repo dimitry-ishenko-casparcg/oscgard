@@ -15,7 +15,7 @@ set(SOURCES
     src/actions.cpp src/actions.hpp
     src/main.cpp
     src/server.cpp  src/server.hpp
-    src/system.cpp  src/system.hpp
+    src/util.cpp    src/util.hpp
 )
 
 ########################

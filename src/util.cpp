@@ -5,7 +5,7 @@
 // Distributed under the GNU GPL license. See the LICENSE.md file for details.
 
 ////////////////////////////////////////////////////////////////////////////////
-#include "system.hpp"
+#include "util.hpp"
 
 #include <cerrno>
 #include <csignal>
