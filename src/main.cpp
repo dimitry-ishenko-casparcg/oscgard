@@ -54,7 +54,7 @@ try
     {
         { "-a", "--address", "addr", "Specify IP address to bind to. Default: 0.0.0.0\n"
                                      "(bind to all addresses)."         },
-        { "-p", "--port", "N",       "Specify port number to listen on Default: 6260." },
+        { "-p", "--port", "N",       "Specify port number to listen on. Default: 6260." },
         { "-h", "--help",            "Print this help screen and exit." },
         { "-v", "--version",         "Show version number and exit."    },
         { "actions?",                "Path to alternate actions file."  },
@@ -63,7 +63,7 @@ try
 
     if(args["--help"])
     {
-        std::cout << args.usage(name) << std::endl;
+        std::cout << "\n" << args.usage(name) << "\n" << std::endl;
     }
     else if(args["--version"])
     {
