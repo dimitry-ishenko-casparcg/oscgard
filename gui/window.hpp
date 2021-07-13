@@ -23,6 +23,22 @@ class window : public QMainWindow
 public:
     explicit window(QWidget* parent = nullptr);
 
+    void open();
+    void save();
+    void save_as();
+    void exit();
+
+    void restart();
+    void start();
+    void stop();
+    void enable();
+    void disable();
+
+    void about();
+
+protected:
+    virtual void closeEvent(QCloseEvent*) override;
+
 private:
     Ui::window ui_;
 };
