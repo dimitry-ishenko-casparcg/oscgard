@@ -30,7 +30,7 @@ target_link_libraries(${PROJECT_NAME} osc++ ${CMAKE_THREAD_LIBS_INIT})
 install(TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 install(FILES LICENSE.md README.md DESTINATION ${CMAKE_INSTALL_DOCDIR})
-install(FILES systemd/oscgard.service DESTINATION ${CMAKE_INSTALL_LIBDIR}/systemd/user/)
+install(FILES systemd/oscgard.service DESTINATION ${CMAKE_INSTALL_LIBDIR}/systemd/user)
 
 ########################
 # package
