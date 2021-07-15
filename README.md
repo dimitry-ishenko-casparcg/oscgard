@@ -5,14 +5,9 @@ on a given computer (server).
 
 ## Installation
 
-### Prerequisites
-
-* [libosc++](https://github.com/dimitry-ishenko-casparcg/liboscpp) >= 1.0
-
-Follow installation instructions on their home page. `libosc++-dev` package is
-only needed when compiling oscgard from source.
-
 ### Binary
+
+Requires [libosc++](https://github.com/dimitry-ishenko-cpp/liboscpp) >= 1.0.
 
 Debian/Ubuntu/etc:
 
@@ -34,8 +29,9 @@ $ sudo apt install ./${p}_${v}_armhf.deb
 
 ### From source
 
-Stable version (requires [CMake](https://cmake.org/) >= 3.1 and
-[asio](https://think-async.com/Asio/)):
+Stable version (requires [CMake](https://cmake.org/) >= 3.1,
+[asio](https://think-async.com/Asio/) and
+[libosc++-dev](https://github.com/dimitry-ishenko-cpp/liboscpp) >= 1.0):
 
 ```shell
 $ p=oscgard
@@ -50,7 +46,8 @@ $ sudo make install
 ```
 
 Latest master (requires [git](https://git-scm.com/),
-[CMake](https://cmake.org/) >= 3.1 and [asio](https://think-async.com/Asio/)):
+[CMake](https://cmake.org/) >= 3.1, [asio](https://think-async.com/Asio/) and
+[libosc++-dev](https://github.com/dimitry-ishenko-cpp/liboscpp) >= 1.0):
 
 ```shell
 $ p=oscgard
