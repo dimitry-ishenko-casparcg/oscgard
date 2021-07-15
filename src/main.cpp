@@ -51,14 +51,14 @@ try
 {
     auto name{ fs::path(argv[0]).filename() };
     pgm::args args
-    {
+    {{
         { "-a", "--address", "addr", "Specify IP address to bind to. Default: 0.0.0.0\n"
                                      "(bind to all addresses)."         },
         { "-p", "--port", "N",       "Specify port number to listen on. Default: 6260." },
         { "-h", "--help",            "Print this help screen and exit." },
         { "-v", "--version",         "Show version number and exit."    },
         { "actions?",                "Path to alternate actions file."  },
-    };
+    }};
     args.parse(argc, argv);
 
     if(args["--help"])
