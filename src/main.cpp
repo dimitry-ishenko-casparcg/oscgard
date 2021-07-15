@@ -50,13 +50,18 @@ int main(int argc, char* argv[])
 try
 {
     auto name{ fs::path(argv[0]).filename() };
+
+    std::string def_address = "127.0.0.1";
+    std::string def_port = "6260";
+    fs::path    def_actions = src::data_path() / name / "actions.conf";
+
     pgm::args args
     {{
-        { "-a", "--address", "addr", "Specify IP address to bind to. Default: 0.0.0.0\n"
-                                     "(bind to all addresses)."         },
-        { "-p", "--port", "N",       "Specify port number to listen on. Default: 6260." },
+        { "-a", "--address", "addr", "Specify IP address to bind to. Default: " + def_address + "." },
+        { "-p", "--port", "N",       "Specify port number to listen on. Default: " + def_port + "." },
         { "-h", "--help",            "Print this help screen and exit." },
         { "-v", "--version",         "Show version number and exit."    },
+
         { "actions?",                "Path to alternate actions file."  },
     }};
     args.parse(argc, argv);
@@ -74,7 +79,7 @@ try
         fs::path path{ args["actions"].value_or("") };
         if(path.empty())
         {
-            path = src::data_path() / name / "actions.conf";
+            path = def_actions;
 
             fs::create_directory(path.parent_path());
             if(!fs::exists(path)) std::fstream{ path, std::ios::out };
@@ -83,10 +88,10 @@ try
         std::cout << "Reading actions from " << path << "." << std::endl;
         auto acts = src::read_actions(path);
 
-        auto address{ to_address(args["--address"].value_or("0.0.0.0")) };
-        auto port{ to_port(args["--port"].value_or("6260")) };
-
-        asio::ip::udp::endpoint local{ address, port };
+        asio::ip::udp::endpoint local{
+            to_address(args["--address"].value_or(def_address)),
+            to_port(args["--port"].value_or(def_port))
+        };
         std::cout << "Listening on " << local << "." << std::endl;
 
         asio::io_context io;
