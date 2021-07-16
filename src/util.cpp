@@ -88,7 +88,7 @@ fs::path data_path()
 #elif defined(__APPLE__)
     return fs::path{ std::getenv("HOME") } / "Library" / "Application Support";
 #elif defined(__unix__)
-    return fs::path{ std::getenv("HOME") } / ".local" / "share";
+    return fs::path{ std::getenv("HOME") } / ".config";
 #else
     #error "Unsupported platform"
 #endif
