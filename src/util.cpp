@@ -83,15 +83,7 @@ void on_interrupt(interrupt_callback cb)
 ////////////////////////////////////////////////////////////////////////////////
 fs::path data_path()
 {
-#if defined(_WIN32)
-    return fs::path{ std::getenv("APPDATA") };
-#elif defined(__APPLE__)
-    return fs::path{ std::getenv("HOME") } / "Library" / "Application Support";
-#elif defined(__unix__)
     return fs::path{ std::getenv("HOME") } / ".config";
-#else
-    #error "Unsupported platform"
-#endif
 }
 
 ////////////////////////////////////////////////////////////////////////////////
