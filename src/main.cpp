@@ -53,7 +53,6 @@ try
 
     std::string def_address = "127.0.0.1";
     std::string def_port = "6260";
-    fs::path    def_actions = src::data_path() / name / "actions.conf";
 
     pgm::args args
     {{
@@ -62,9 +61,13 @@ try
         { "-h", "--help",            "Print this help screen and exit." },
         { "-v", "--version",         "Show version number and exit."    },
 
-        { "actions?",                "Path to alternate actions file."  },
+        { "actions",                 "Specify path to actions file."    },
     }};
-    args.parse(argc, argv);
+
+    // delay exception handling to process --help and --version
+    std::exception_ptr ep;
+    try { args.parse(argc, argv); }
+    catch(...) { ep = std::current_exception(); }
 
     if(args["--help"])
     {
@@ -74,16 +77,13 @@ try
     {
         std::cout << name.string() << " version " << VERSION << std::endl;
     }
+    else if(ep)
+    {
+        std::rethrow_exception(ep);
+    }
     else
     {
-        fs::path path{ args["actions"].value_or("") };
-        if(path.empty())
-        {
-            path = def_actions;
-
-            fs::create_directory(path.parent_path());
-            if(!fs::exists(path)) std::fstream{ path, std::ios::out };
-        }
+        fs::path path{ args["actions"].value() };
 
         std::cout << "Reading actions from " << path << "." << std::endl;
         auto acts = src::read_actions(path);
