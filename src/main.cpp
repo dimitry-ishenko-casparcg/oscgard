@@ -86,7 +86,7 @@ try
         fs::path path{ args["actions"].value() };
 
         std::cout << "Reading actions from " << path << "." << std::endl;
-        auto acts = src::read_actions(path);
+        auto actions = src::read_actions(path);
 
         asio::ip::udp::endpoint local{
             to_address(args["--address"].value_or(def_address)),
@@ -95,7 +95,7 @@ try
         std::cout << "Listening on " << local << "." << std::endl;
 
         asio::io_context io;
-        src::server server{ io, local, acts };
+        src::server server{ io, local, actions };
 
         src::on_interrupt([&](int signal)
         {
