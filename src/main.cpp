@@ -105,9 +105,9 @@ try
 
         std::cout << "Starting event loop." << std::endl;
         io.run();
-
-        return 0;
     }
+
+    return 0;
 }
 catch(std::exception& e)
 {
