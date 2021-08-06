@@ -81,7 +81,13 @@ void on_interrupt(interrupt_callback cb)
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-fs::path data_path() { return fs::path{ std::getenv("HOME") } / ".config"; }
+fs::path xdg_config_home()
+{
+    fs::path path{ std::getenv("XDG_CONFIG_HOME") };
+    if(path.empty()) path = fs::path{ std::getenv("HOME") } / ".config";
+
+    return path;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 bool is_root() { return geteuid() == 0; }

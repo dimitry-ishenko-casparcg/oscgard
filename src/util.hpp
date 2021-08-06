@@ -37,7 +37,7 @@ using interrupt_callback = std::function<void (int)>;
 void on_interrupt(interrupt_callback);
 
 ////////////////////////////////////////////////////////////////////////////////
-fs::path data_path();
+fs::path xdg_config_home();
 
 bool is_root();
 
