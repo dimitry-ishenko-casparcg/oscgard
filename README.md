@@ -1,24 +1,24 @@
 # OSC Gateway
 
 **oscgard** is an OSC gateway, which allows one to map OSC messages to actions
-to be executed by the computer running the gateway (a.k.a. the OSC server).
+to be executed by the computer running it (a.k.a. the OSC server).
 
 By default **oscgard** will listen for messages on IP address `127.0.0.1` and
 port `6260`. These can be overridden with the `--address` and `--port` options
 respectively.
 
-Path to file containing list of actions to be executed must be specified as the
-one and only positional argument.
+Path to file with list of actions to be executed can be specified as the one and
+only positional argument.
 
 **oscgard** can run either as user or system [systemd](https://systemd.io/)
-service. When running as user service, the recommended path for the actions file
-is `$HOME/.config/oscgard/actions.conf`. For system service, the recommended
-path is `/etc/oscgard/actions.conf`.
+service. When running as user service, the default path for the actions file is
+`$XDG_CONFIG_HOME/oscgard/actions.conf` if `$XDG_CONFIG_HOME` is defined, or
+`$HOME/.config/oscgard/actions.conf` otherwise. When running as system service,
+the default path is `/etc/oscgard/actions.conf`.
 
 The actions file consists of simple `<address> = <action>` entries, where
 `<address>` is an address pattern (in regex form) against which incoming
-messages are compared, and `<action>` is a command to be executed in case of a
-match. For example:
+messages are matched, and `<action>` is a command to be executed. For example:
 
 ```ini
 # actions.conf
@@ -27,8 +27,8 @@ match. For example:
 /set/motor/speed = set-speed.py {0}
 
 # turn on/off LEDs: {0} = "on" or "off"
-# NB: led.sh will receive /set/led/<N>/state as the first argument
-# and will strip N out of it
+# NB: led.sh will receive "/set/led/<N>/state" as the first argument
+# and will need to strip N out of it
 /set/led/.*/state = /home/pi/bin/led.sh {A} {0}
 
 # set volume level in dB: {0} = Lch , {1} = Rch
@@ -84,7 +84,7 @@ following steps:
 
    ```ini
    [Service]
-   Environment="args=--address=0.0.0.0 --port=1234 %h/.config/oscgard/actions.conf"
+   Environment="args=--address=0.0.0.0 --port=1234"
    ```
 
    NB: The above will make **oscgard** listen on port `1234` on __all__ IP
@@ -117,11 +117,8 @@ system-wide actions. To set up system service, perform the following steps:
 
    ```ini
    [Service]
-   Environment="args=--address=0.0.0.0 --port=1234 /etc/oscgard/actions.conf"
+   Environment="args=--address=127.0.0.1 --port=42"
    ```
-
-   NB: The above will make **oscgard** listen on port `1234` on __all__ IP
-   addresses and has potential security implications.
 
 3. Enable and start the service:
 
