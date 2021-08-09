@@ -83,10 +83,13 @@ void on_interrupt(interrupt_callback cb)
 ////////////////////////////////////////////////////////////////////////////////
 fs::path xdg_config_home()
 {
-    fs::path path{ std::getenv("XDG_CONFIG_HOME") };
-    if(path.empty()) path = fs::path{ std::getenv("HOME") } / ".config";
+    auto val = std::getenv("XDG_CONFIG_HOME");
+    if(val) return fs::path{ val };
 
-    return path;
+    val = std::getenv("HOME");
+    if(val) return fs::path{ val } / ".config";
+
+    return { };
 }
 
 ////////////////////////////////////////////////////////////////////////////////
