@@ -2,7 +2,7 @@
 Description=OSC Gateway
 
 [Service]
-Environment="args=/etc/oscgard/actions.conf"
+Environment="args="
 ExecStart=/usr/bin/oscgard $args
 StandardOutput=journal
 StandardError=journal
